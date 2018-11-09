@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private IjkVideoView mVideoView;
     private PlayerManager player;
 
-    private String url5 = "http://jzvd.nathen.cn/342a5f7ef6124a4a8faf00e738b8bee4/cf6d9db0bd4d41f59d09ea0a81e918fd-5287d2089db37e62345123a1be272f8b.mp4";
+    private String url5 = "http://stream1.grtn.cn/tvs2/sd/live.m3u8?_ts&time=1518428696629";
     private String url6 = "http://218.207.213.137//PLTV/88888888/224/3221225879/index.m3u8";
     private String url7 = "http://183.251.61.207/PLTV/88888888/224/3221225829/index.m3u8";
 
@@ -38,30 +38,29 @@ public class MainActivity extends AppCompatActivity {
         /** 普通播放 start **/
         mVideoView.setAspectRatio(IRenderView.AR_ASPECT_FIT_PARENT);
         mVideoView.setVideoURI(Uri.parse(url5));
-        mVideoView.setAspectRatio(IRenderView.AR_MATCH_PARENT);
         mVideoView.start();
         /** 普通播放 end **/
 
-//        initVideo();
+        initVideo();
     }
 
-//    使用滑动控制的话解开注释
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        if (player.gestureDetector.onTouchEvent(event))
-//            return true;
-//        return super.onTouchEvent(event);
-//    }
+    //使用滑动控制的话解开注释
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (player.gestureDetector.onTouchEvent(event))
+            return true;
+        return super.onTouchEvent(event);
+    }
 
     /**
      * 可左半屏滑动控制亮度  右半屏控制音量  双击切换比例  （无提示）
      */
     private void initVideo() {
-        player = new PlayerManager(this);
-//        player.setFullScreenOnly(true);
-//        player.live(true);
-        player.setScaleType(PlayerManager.SCALETYPE_FITXY);
-//        player.playInFullScreen(true);
+        player = new PlayerManager(this,mVideoView);
+        player.setFullScreenOnly(true);
+        player.live(true);
+        player.setScaleType(PlayerManager.SCALETYPE_16_9);
+        player.playInFullScreen(true);
         player.setPlayerStateListener(new PlayerManager.PlayerStateListener() {
             @Override
             public void onComplete() {
@@ -90,8 +89,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onInfo(IMediaPlayer iMediaPlayer, int i, int i1) {
                 switch (i) {
                     case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+
                         break;
                     case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+
                     case MediaPlayer.MEDIA_INFO_VIDEO_TRACK_LAGGING:
                         break;
                 }
